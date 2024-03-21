@@ -1,41 +1,28 @@
-#include "HTTPParser.h"
+#include "include/HTTPParser.h"
 
 HTTPParser::HTTPParser(){
     throw std::invalid_argument("Class requires parameters");
 }
+
 HTTPParser::HTTPParser(ProvinceCode code){
-    _code = code;
-    _url = "https://dd.weather.gc.ca/citypage_weather/xml/"+ProvinceCodes::toString(_code)+"/"+"s0000702"+"_e.xml";
-    cout << _url;
+  
+  curl_global_init(CURL_GLOBAL_DEFAULT);
+  curl_ = curl_easy_init();
+  if (!curl_) {
+      cerr << "Failed to initialize Libcurl." << endl;
+      throw runtime_error("Failed to initialize Libcurl.");
+  }
 }
 
-void HTTPParser::callUrl(){
-    CURL *curl;
-    CURLcode res;
-
-    // Initialize Libcurl
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    curl = curl_easy_init();
-    if(curl) {
-        // Set the URL to fetch
-        curl_easy_setopt(curl, CURLOPT_URL, _url.c_str());
-
-        // Perform the request
-        res = curl_easy_perform(curl);
-        // Check for errors
-        if(res == CURLE_OK) {
-            cout << "Success" << endl;
-        } else {
-            cerr << "Failed to fetch URL: " << curl_easy_strerror(res) << endl;
-        }
-
-        // Cleanup Libcurl
-        curl_easy_cleanup(curl);
-    } else {
-        cerr << "Failed to initialize Libcurl." << endl;
+string HTTPParser::fetchData(string url) {
+    string data;
+    curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, writeCallback);
+    curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &data);
+    CURLcode res = curl_easy_perform(curl_);
+    if (res != CURLE_OK) {
+        cerr << "Failed to fetch URL: " << curl_easy_strerror(res) << endl;
+        throw runtime_error("Failed to fetch URL.");
     }
-
-    // Cleanup Libcurl global resources
-    curl_global_cleanup();
-
+    return data;
 }
