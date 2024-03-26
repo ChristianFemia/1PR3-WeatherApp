@@ -45,7 +45,7 @@ bool UserData::login(string username, string hashedPassword) {
     string storedUsername, storedHashedPassword;
     istringstream iss(line);
     if (iss >> storedUsername >> storedHashedPassword) {
-      if (storedUsername == username && bcrypt::validatePassword(hashedPassword, storedHashedPassword) {
+      if (storedUsername == username && bcrypt::validatePassword(hashedPassword, storedHashedPassword)) {
           hashedPassword = storedHashedPassword;
           m_auth = true;
           return true; // Username found, and password was correct

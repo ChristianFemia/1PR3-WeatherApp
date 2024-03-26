@@ -5,9 +5,14 @@ using namespace tinyxml2;
 class XMLParser : public HTTPParser {
 private:
   string _data;
-  ProvinceCodes _code;
+  ProvinceCode _code;
 
 public:
   XMLParser();
-  XMLParser(string data, ProvinceCodes code);
+  XMLParser(ProvinceCode code);
+
+  XMLElement* parseXML(string xmlData);
+
+  void printXMLElements(XMLElement* element);
+
 };

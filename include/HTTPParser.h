@@ -1,22 +1,22 @@
 #pragma once
-#include <string>
-#include <stdexcept>
+#include "ProvinceCodes.h"
 #include <curl/curl.h>
 #include <iostream>
-#include "ProvinceCodes.h"
+#include <stdexcept>
+#include <string>
 using namespace std;
-class HTTPParser
-{
+class HTTPParser {
 private:
-  CURL* curl_;
-  static size_t writeCallback(char* ptr, size_t size, size_t nmemb, string* data) {
-      data->append(ptr, size * nmemb);
-      return size * nmemb;
+  ProvinceCode _code;
+  CURL *curl_;
+  static size_t writeCallback(char *ptr, size_t size, size_t nmemb,
+                              string *data) {
+    data->append(ptr, size * nmemb);
+    return size * nmemb;
   }
 
 public:
-    HTTPParser();
-    HTTPParser(ProvinceCode code);
-    string fetchData(string url);
-
+  HTTPParser();
+  HTTPParser(ProvinceCode code);
+  string fetchData();
 };

@@ -1,22 +1,43 @@
 #include "include/XMLParser.h"
 
-XMLDocument* parseXML(const string& xmlData, XMLDocument &pDoc) {
-    XMLDocument* doc = &pDoc;
-    doc->Parse(xmlData.c_str());
-    if (doc->Error()) {
-        cerr << "Failed to parse XML" << endl;
-    }
-    return doc;
+
+XMLParser::XMLParser(){
+  throw std::invalid_argument("Class requires parameters");
 }
-/*
-void printXMLElements(const TiXmlDocument& doc) {
-    const TiXmlElement* root = doc.RootElement();
-    if (root) {
-        for (const TiXmlElement* elem = root->FirstChildElement(); elem; elem = elem->NextSiblingElement()) {
-            cout << "Element name: " << elem->Value() << ", value: " << elem->GetText() << endl;
-        }
-    } else {
-        cerr << "XML data is empty or invalid." << endl;
-        throw runtime_error("XML data is empty or invalid.");
-    }
-}*/
+XMLParser::XMLParser(ProvinceCode code) : HTTPParser(code){
+  _data = "";
+}
+  
+XMLElement* XMLParser::parseXML(string xmlData) {
+
+  tinyxml2::XMLDocument doc;
+  doc.Parse(fetchData().c_str());
+  XMLElement* child = doc.FirstChildElement();
+  printXMLElements(child);
+  return child;
+}
+
+void XMLParser::printXMLElements(XMLElement* element) {
+  for (XMLElement* elem = element; elem != nullptr; elem = elem->NextSiblingElement()) {
+      const char* elementName = elem->Value();
+      cout << "Element: " << elementName;
+
+      // Print attributes if any
+      const XMLAttribute* attr = elem->FirstAttribute();
+      while (attr) {
+          cout << " | Attribute: " << attr->Name() << " = " << attr->Value();
+          attr = attr->Next();
+      }
+
+      // Print text content if any
+      const char* text = elem->GetText();
+      if (text) {
+          cout << " | Text: " << text;
+      }
+
+      cout << endl;
+
+      // Recursively print child elements
+        printXMLElements(elem->FirstChildElement());
+  }
+}
