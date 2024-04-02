@@ -4,8 +4,9 @@ HTTPParser::HTTPParser() {
   throw std::invalid_argument("Class requires parameters");
 }
 
-HTTPParser::HTTPParser(ProvinceCode code) {
+HTTPParser::HTTPParser(ProvinceCode code, string cityCode) {
   _code = code;
+  _cityCode = cityCode;
   curl_global_init(CURL_GLOBAL_DEFAULT);
   curl_ = curl_easy_init();
   if (!curl_) {
@@ -16,7 +17,7 @@ HTTPParser::HTTPParser(ProvinceCode code) {
 
 string HTTPParser::fetchData() {
   string url = "https://dd.weather.gc.ca/citypage_weather/xml/" +
-               ProvinceCodes::toString(_code) + "/" + "s0000702" +
+               ProvinceCodes::toString(_code) + "/" + _cityCode +
                "_e.xml";
   string data;
   curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());

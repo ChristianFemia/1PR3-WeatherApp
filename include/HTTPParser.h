@@ -8,6 +8,7 @@ using namespace std;
 class HTTPParser {
 private:
   ProvinceCode _code;
+  string _cityCode;
   CURL *curl_;
   static size_t writeCallback(char *ptr, size_t size, size_t nmemb,
                               string *data) {
@@ -17,6 +18,6 @@ private:
 
 public:
   HTTPParser();
-  HTTPParser(ProvinceCode code);
+  HTTPParser(ProvinceCode code, string cityCode);
   string fetchData();
 };

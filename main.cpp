@@ -6,6 +6,6 @@ using namespace std;
 
 
 int main() {
-    XMLParser parser(ProvinceCode::ON);
-    parser.parseXML("lol");
+    XMLParser parser(ProvinceCode::ON, "s0000549");
+    parser.parseXML();
 }

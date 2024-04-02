@@ -1,43 +1,52 @@
 #include "include/XMLParser.h"
-
+#include <fstream>
 
 XMLParser::XMLParser(){
   throw std::invalid_argument("Class requires parameters");
 }
-XMLParser::XMLParser(ProvinceCode code) : HTTPParser(code){
+XMLParser::XMLParser(ProvinceCode code, string cityCode) : HTTPParser(code, cityCode){
   _data = "";
 }
   
-XMLElement* XMLParser::parseXML(string xmlData) {
+void XMLParser::parseXML() {
 
   tinyxml2::XMLDocument doc;
   doc.Parse(fetchData().c_str());
-  XMLElement* child = doc.FirstChildElement();
-  printXMLElements(child);
-  return child;
-}
+  
+  fstream file("CityData.txt");
+  const char* elementToSearch[] = { "temperature", "relativeHumidity", "precipitation", "winds"};
 
-void XMLParser::printXMLElements(XMLElement* element) {
-  for (XMLElement* elem = element; elem != nullptr; elem = elem->NextSiblingElement()) {
-      const char* elementName = elem->Value();
-      cout << "Element: " << elementName;
+  string name = 
+doc.FirstChildElement("siteData")->FirstChildElement("location")->FirstChildElement("name")->GetText();
+   cout << name << endl;
+  string temp = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("temperature")->GetText();
+  cout << temp << endl;
 
-      // Print attributes if any
-      const XMLAttribute* attr = elem->FirstAttribute();
-      while (attr) {
-          cout << " | Attribute: " << attr->Name() << " = " << attr->Value();
-          attr = attr->Next();
-      }
-
-      // Print text content if any
-      const char* text = elem->GetText();
-      if (text) {
-          cout << " | Text: " << text;
-      }
-
-      cout << endl;
-
-      // Recursively print child elements
-        printXMLElements(elem->FirstChildElement());
+  //precip
+  string rain = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("forecast")->FirstChildElement("precipitation")->FirstChildElement("accumulation")->FirstChildElement("amount")->GetText();
+  if(rain !="") {
+    cout << "Precipitation: " << rain << endl;
+  } else{
+    rain = "";
+    cout << "Precipitation: 0" << endl;
   }
+  //wind speeds
+  string wind = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("wind")->FirstChildElement("speed")->GetText();
+  if(wind != ""){
+    cout << wind << endl;
+  } else{
+    wind = "";
+    cout << "No wind data" << endl;
+  }
+
+  string humidity = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("relativeHumidity")->GetText();
+  cout << humidity << endl;
+
+  string high = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->GetText();
+  cout << high << endl;
+
+  string low = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->NextSiblingElement()->GetText();
+  cout << low << endl;
+  file << name << " " << temp  << " " << rain  << " " << wind << " " << humidity << " " << high << " "  << low;
+  file.close();
 }

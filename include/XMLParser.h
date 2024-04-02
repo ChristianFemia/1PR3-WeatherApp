@@ -9,10 +9,9 @@ private:
 
 public:
   XMLParser();
-  XMLParser(ProvinceCode code);
+  XMLParser(ProvinceCode code, string cityCode);
 
-  XMLElement* parseXML(string xmlData);
+  void parseXML();
 
-  void printXMLElements(XMLElement* element);
 
 };
