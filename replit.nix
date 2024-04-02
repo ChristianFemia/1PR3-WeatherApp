@@ -9,5 +9,10 @@
 	  pkgs.curl.dev
     pkgs.curl.dev
     pkgs.curl.dev
+    pkgs.curl.dev
+    pkgs.curl.dev
+    pkgs.curl.dev
+    pkgs.curl.dev
+    pkgs.curl.dev
   ];
 }
