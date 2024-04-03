@@ -1,13 +1,7 @@
 #include "include/HTTPParser.h"
 
 HTTPParser::HTTPParser() {
-  throw std::invalid_argument("Class requires parameters");
-}
-
-HTTPParser::HTTPParser(ProvinceCode code, string cityCode) {
-  _code = code;
-  _cityCode = cityCode;
-  curl_global_init(CURL_GLOBAL_DEFAULT);
+  curl_global_init(CURL_GLOBAL_DEFAULT); //initalize curl, the parsing library
   curl_ = curl_easy_init();
   if (!curl_) {
     cerr << "Failed to initialize Libcurl." << endl;
@@ -17,14 +11,14 @@ HTTPParser::HTTPParser(ProvinceCode code, string cityCode) {
 
 string HTTPParser::fetchData() {
   string url = "https://dd.weather.gc.ca/citypage_weather/xml/" +
-               ProvinceCodes::toString(_code) + "/" + _cityCode +
+               _code + "/" + _cityCode +
                "_e.xml";
   string data;
-  curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
-  curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, writeCallback);
-  curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &data);
-  CURLcode res = curl_easy_perform(curl_);
-  if (res != CURLE_OK) {
+  curl_easy_setopt(curl_, CURLOPT_URL, url.c_str()); //Open the connect over the internet
+  curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, writeCallback); //Set the write callback
+  curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &data); //Write the data to the string
+  CURLcode res = curl_easy_perform(curl_); //Perform the request
+  if (res != CURLE_OK) { //If failed, error out.
     cerr << "Failed to fetch URL: " << curl_easy_strerror(res) << endl;
     throw runtime_error("Failed to fetch URL.");
   }

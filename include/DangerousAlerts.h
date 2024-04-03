@@ -13,7 +13,6 @@ private:
 public:
 
   DangerousAlerts();
-  DangerousAlerts(string loc, double temp, double wind, double humidity, double pressure, double percipitation);
 
   double getDewPoint();
   void displayAlert();

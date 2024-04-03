@@ -8,4 +8,5 @@ Build Instructions:
 
 Special acknowledgments:
 TinyXML for XML Parsing: https://github.com/leethomason/tinyxml2
-g++ *.cpp -o main -lcurl -std=c++11
+
+Parsed from: https://dd.weather.gc.ca/citypage_weather/xml/ON/s0000549_e.xml

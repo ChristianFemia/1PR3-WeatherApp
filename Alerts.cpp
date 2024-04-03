@@ -2,16 +2,22 @@
 
 Alerts::Alerts() {
 
-  m_location = "";
-  m_temp = 0;
-  m_windSpeed = 0;
+  fstream File;
+  File.open("CityData.txt");//Reading from CityData.txt into vairables.
+  if (File){
+    while(File){
+      File >> m_location;
+      File >> m_temp;
+      File >> m_rain;
+      File >> m_windSpeed;
+      File >> m_humidity;
+      File >> m_highTemp;
+      File >> m_lowTemp;
+      File >> m_pressure;
+    }
+  } else {
+    cout << "Unable to open file." << endl;
+  }
 
 }
 
-Alerts::Alerts(string loc, double temp, double wind) {
-
-  m_location = loc;
-  m_temp = temp;
-  m_windSpeed = wind;
-
-}

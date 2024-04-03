@@ -1,5 +1,5 @@
 #pragma once
-#include "ProvinceCodes.h"
+
 #include <curl/curl.h>
 #include <iostream>
 #include <stdexcept>
@@ -7,7 +7,7 @@
 using namespace std;
 class HTTPParser {
 private:
-  ProvinceCode _code;
+  string _code;
   string _cityCode;
   CURL *curl_;
   static size_t writeCallback(char *ptr, size_t size, size_t nmemb,
@@ -18,6 +18,8 @@ private:
 
 public:
   HTTPParser();
-  HTTPParser(ProvinceCode code, string cityCode);
+  void setCode(string code){ _code = code; }
+  void setCityCode(string cityCode){ _cityCode = cityCode; }
+  void setProvinceCode(string provinceCode) { _code = provinceCode; }
   string fetchData();
 };

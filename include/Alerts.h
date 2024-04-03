@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -11,11 +12,15 @@ protected:
   string m_location;
   double m_temp;
   double m_windSpeed;
+  double m_rain;
+  double m_pressure;
+  double m_humidity;
+  double m_highTemp;
+  double m_lowTemp;
 
 public:
   Alerts();
 
-  Alerts(string loc, double temp, double wind);
   //Pure Virtual Functions
   virtual void displayAlert() = 0;
 };

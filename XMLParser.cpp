@@ -1,52 +1,49 @@
 #include "include/XMLParser.h"
 #include <fstream>
 
-XMLParser::XMLParser(){
-  throw std::invalid_argument("Class requires parameters");
-}
-XMLParser::XMLParser(ProvinceCode code, string cityCode) : HTTPParser(code, cityCode){
-  _data = "";
-}
+XMLParser::XMLParser() : HTTPParser(){ _data = ""; }
   
 void XMLParser::parseXML() {
 
   tinyxml2::XMLDocument doc;
-  doc.Parse(fetchData().c_str());
-  
+  doc.Parse(fetchData().c_str()); //Fetch the data and parse it.
+  //Open the file and overwrite its contents
   fstream file("CityData.txt");
-  const char* elementToSearch[] = { "temperature", "relativeHumidity", "precipitation", "winds"};
 
+  //Each XMLDocument is parsing the data down-stream from each element, with the first element being the root, siteData.
+//name of city 
   string name = 
-doc.FirstChildElement("siteData")->FirstChildElement("location")->FirstChildElement("name")->GetText();
-   cout << name << endl;
+doc.FirstChildElement("siteData")->FirstChildElement("location")->FirstChildElement("name")->GetText(); 
+  
   string temp = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("temperature")->GetText();
-  cout << temp << endl;
 
   //precip
   string rain = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("forecast")->FirstChildElement("precipitation")->FirstChildElement("accumulation")->FirstChildElement("amount")->GetText();
-  if(rain !="") {
-    cout << "Precipitation: " << rain << endl;
+  if(rain !="") { //Rain sometimes doesn't exist, if it doesn't, just set the variable to "";
   } else{
     rain = "";
-    cout << "Precipitation: 0" << endl;
   }
+  
   //wind speeds
   string wind = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("wind")->FirstChildElement("speed")->GetText();
   if(wind != ""){
-    cout << wind << endl;
   } else{
     wind = "";
-    cout << "No wind data" << endl;
   }
 
   string humidity = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("relativeHumidity")->GetText();
-  cout << humidity << endl;
-
+  
+// high temp and low temp
   string high = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->GetText();
-  cout << high << endl;
 
   string low = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->NextSiblingElement()->GetText();
-  cout << low << endl;
-  file << name << " " << temp  << " " << rain  << " " << wind << " " << humidity << " " << high << " "  << low;
+
+  string pressure = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("pressure")->GetText();
+  
+  
+  file << name << " " << temp  << " " << rain << " " << wind << " " << humidity << " " << high << " "  << low  << " " << pressure; //Save the data to the file.
   file.close();
 }
+
+
+

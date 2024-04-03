@@ -9,13 +9,13 @@ using namespace std;
 class XMLParser : public HTTPParser {
 private:
     XMLDocument _doc;
-    ProvinceCode _code;
+    string _code;
     string _data;
 
 public:
 
   XMLParser();
-  XMLParser(ProvinceCode code, string cityCode);
+  XMLParser(string code, string cityCode);
 
   void parseXML();
 
