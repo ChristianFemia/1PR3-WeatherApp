@@ -18,7 +18,7 @@ void DisplayDriver::parseXML(bool generateReport){
     parser.setProvinceCode(m_provinceCode); 
   } else if (choice == 2) {
     string cityCode, provinceCode;
-    cout << "Please enter a city code that you wish to search for. (Such as s0000549 for Hamiltion") << endl;
+    cout << "Please enter a city code that you wish to search for. (Such as s0000549 for Hamiltion" << endl;
     cin >> cityCode;
     cout << "Please enter a unique province code for the city you just entered. Pleaes note, this is not the province name, but the 2 letter abbreviation. (Such as ON for Ontario)." << endl;
     cin >> provinceCode;

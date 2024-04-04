@@ -9,8 +9,8 @@ Statistics::Statistics(string location) {
   if (File){
     while(File >> m_location){
       File >> present_temp;
-      File >> present_humidity;
       File >> presipitation;
+      File >> present_humidity;
       File >> wind_speed;
       File >> warmest_temp;
       File >> coldest_temp;

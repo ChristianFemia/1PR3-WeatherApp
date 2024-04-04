@@ -10,3 +10,11 @@ Special acknowledgments:
 TinyXML for XML Parsing: https://github.com/leethomason/tinyxml2
 
 Parsed from: https://dd.weather.gc.ca/citypage_weather/xml/ON/s0000549_e.xml
+
+Parsed from: https://dd.weather.gc.ca/citypage_weather/xml/ON
+
+# Credits
+Christian Femia
+Mustafa Massoumi
+Mykyta Sniezko
+Titus Cheung

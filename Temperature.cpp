@@ -8,7 +8,6 @@ Temperature::Temperature(string location) : Statistics(location){}
 void Temperature::display() {
   int const basetemp = 5;
   const int solar_radiation = 1380;
-  string l = m_location;
 
       cout << "TEMPERATURE FACTORS" << endl;
       cout << "______________________" << endl;

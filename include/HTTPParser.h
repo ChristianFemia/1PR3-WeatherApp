@@ -18,7 +18,6 @@ private:
 
 public:
   HTTPParser();
-  void setCode(string code){ _code = code; }
   void setCityCode(string cityCode){ _cityCode = cityCode; }
   void setProvinceCode(string provinceCode) { _code = provinceCode; }
   string fetchData();

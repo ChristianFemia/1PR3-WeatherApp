@@ -16,30 +16,27 @@ void XMLParser::parseXML() {
 doc.FirstChildElement("siteData")->FirstChildElement("location")->FirstChildElement("name")->GetText(); 
   
   string temp = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("temperature")->GetText();
-
-  //precip
-  string rain = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("forecast")->FirstChildElement("precipitation")->FirstChildElement("accumulation")->FirstChildElement("amount")->GetText();
-  if(rain !="") { //Rain sometimes doesn't exist, if it doesn't, just set the variable to "";
-  } else{
-    rain = "";
+  //Sometimes, these elements do not exist, so we need a try-catch to handle the exception.
+  string rain = "537";
+  XMLElement* rainEle;
+  try {
+   rainEle = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("forecast")->FirstChildElement("precipitation")->FirstChildElement("accumulation");
+  }catch (std::exception& e){
+    rain = "537";
   }
-  
+ 
   //wind speeds
   string wind = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("wind")->FirstChildElement("speed")->GetText();
   if(wind != ""){
   } else{
     wind = "";
   }
-
   string humidity = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("relativeHumidity")->GetText();
   
 // high temp and low temp
   string high = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->GetText();
-
   string low = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("regionalNormals")->FirstChildElement("temperature")->NextSiblingElement()->GetText();
-
   string pressure = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("pressure")->GetText();
-  
   
   file << name << " " << temp  << " " << rain << " " << wind << " " << humidity << " " << high << " "  << low  << " " << pressure; //Save the data to the file.
   file.close();

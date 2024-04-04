@@ -9,13 +9,11 @@ WeatherReport::WeatherReport() : XMLParser(){};
         cout << "Location: " << doc.FirstChildElement("siteData")->FirstChildElement("location")->FirstChildElement("name")->GetText() << endl;
         cout << "---------------------------------------\n";
       XMLElement* forecast = doc.FirstChildElement("siteData")->FirstChildElement("forecastGroup")->FirstChildElement("forecast");
-            string period = forecast->FirstChildElement("period")->GetText();
+          string period = forecast->FirstChildElement("period")->GetText();
             string summary = forecast->FirstChildElement("textSummary")->GetText();
             string temperatures = forecast->FirstChildElement("temperatures")->FirstChildElement("textSummary")->GetText();
-            string winds = "Wind: " + string(forecast->FirstChildElement("winds")->FirstChildElement("textSummary")->GetText());
-
+             string winds = doc.FirstChildElement("siteData")->FirstChildElement("currentConditions")->FirstChildElement("wind")->FirstChildElement("speed")->GetText();
             string humidity = "Relative Humidity: " + string(forecast->FirstChildElement("relativeHumidity")->GetText()) + "%";
-
             // UV index might be missing in some forecasts, so check if it exists first
             const char* uvText = forecast->FirstChildElement("uv") ? forecast->FirstChildElement("uv")->FirstChildElement("textSummary")->GetText() : "Not available";
             string uvIndex = "UV Index: " + string(uvText);
@@ -23,7 +21,7 @@ WeatherReport::WeatherReport() : XMLParser(){};
             cout << period << ":\n";
             cout << summary << "\n";
             cout << temperatures << "\n";
-            cout << winds << "\n";
+            cout << "Wind gusts up to: " << winds << " km/h" << "\n";
             cout << humidity << "\n";
             cout << uvIndex << "\n\n";
 

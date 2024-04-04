@@ -8,7 +8,7 @@ void GeneralData::display() {
         cout << "______________" << endl;
         cout << "Todays temperature is: " << present_temp << " degres celcius" << endl;
         cout << "Todays humidity is: " << present_humidity << "%" << endl;
-        cout << "The chance of percipitation is: " << presipitation << "%" << endl << endl;
+        cout << "The amount of percipitation is: " << presipitation << "mm" << endl << endl;
 
         cout << "HIGHS & LOWS" << endl;
         cout << "____________" << endl;
